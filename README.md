@@ -21,8 +21,25 @@ ASP.NET Core 9.0 solution for a small-office stationery warehouse with PostgreSQ
 
 ## Getting Started
 
-1. Clone the repository and open the solution in Visual Studio or run CLI commands from the repository root.
-2. Restore packages and build:
+### Option A — Docker (рекомендуется для быстрого запуска)
+
+1. Установите Docker Desktop / Docker Engine.
+2. В корне проекта выполните:
+   ```bash
+   docker compose up --build
+   ```
+3. API будет доступен на `http://localhost:8080` (Swagger: `http://localhost:8080/swagger`).
+4. PostgreSQL доступен на `localhost:5432` с учётными данными `warehouse_user / warehouse_pwd`.
+
+### Option B — Локально с Visual Studio / CLI
+
+1. Установите .NET SDK 9.0 Preview и PostgreSQL 16.
+2. Откройте `WarehouseManagement.sln` в Visual Studio 2022 (17.10+) или выполните команды из корня:
+   ```bash
+   dotnet restore
+   dotnet build
+   ```
+3. Настройте строку подключения и JWT-секрет:
    ```bash
    dotnet restore
    dotnet build
@@ -31,17 +48,17 @@ ASP.NET Core 9.0 solution for a small-office stationery warehouse with PostgreSQ
    - Copy `src/WarehouseManagement.Api/appsettings.json` to an environment-specific file or override values via environment variables: 
      - `ConnectionStrings__DefaultConnection`
      - `Jwt__Issuer`, `Jwt__Audience`, `Jwt__Secret`
-4. Apply EF Core migrations (will run automatically on start). To add new migrations locally:
+4. Apply EF Core migrations (автоматически выполняются при старте). Для ручного управления миграциями:
    ```bash
    dotnet ef migrations add InitialCreate --project src/WarehouseManagement.Infrastructure --startup-project src/WarehouseManagement.Api
    dotnet ef database update --project src/WarehouseManagement.Infrastructure --startup-project src/WarehouseManagement.Api
    ```
    Alternatively, execute `scripts/initial_schema.sql` against an empty database.
-5. Run the API:
+5. Запустите API:
    ```bash
    dotnet run --project src/WarehouseManagement.Api
    ```
-6. Navigate to `https://localhost:5001/swagger` for interactive API documentation.
+6. Откройте `https://localhost:5001/swagger` (или адрес, который показывает Kestrel) для документации.
 
 ## Running Tests
 
